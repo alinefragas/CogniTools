@@ -1,26 +1,135 @@
-#Import the required libraries
+########################
+# TO-DO LIST           #
+# solve path problem   #
+# solve remove problem #
+########################
+
+# IMPORT LIBRARIES
+import re
+import urllib.request
+from collections import Counter
 from tkinter import *
-from tkinter import ttk
+import random
 
-#Create an instance of Tkinter Frame
-win = Tk()
+# function to set dictionary
+def getWords(theme):
 
-#Set the geometry
-win.geometry("700x250")
+   
+   theme = 'Football'
+   URL = 'https://en.wikipedia.org/wiki/' + theme
 
-# Define a function to return the Input data
-def get_data():
-   label.config(text= entry.get(), font= ('Helvetica 13'))
+   # get words from wikipedia page
+   counter = Counter()
+   with urllib.request.urlopen(URL) as source:
+      for line in source:
+         words = re.split(r"[^A-Z]+", line.decode('utf-8'), flags=re.I)
+         counter.update(words)
 
-#Create an Entry Widget
-entry = Entry(win, width= 42)
-entry.place(relx= .5, rely= .5, anchor= CENTER)
+   # get words from blank page 
+   blankcounter = Counter()
+   URL = 'https://en.wikipedia.org/wiki/Wikipedia:The_blank_page'
+   with urllib.request.urlopen(URL) as source:
+      for line in source:
+         words = re.split(r"[^A-Z]+", line.decode('utf-8'), flags=re.I)
+         blankcounter.update(words)
 
-#Inititalize a Label widget
-label= Label(win, text="", font=('Helvetica 13'))
-label.pack()
+   # remove gibberish
+   for key in blankcounter:
+      if key in counter:
+         del counter[key]
+   
+   listOfWords = list(counter.keys())
+   return listOfWords
 
-#Create a Button to get the input data
-ttk.Button(win, text= "Click to Show", command= get_data).place(relx= .7, rely= .5, anchor= CENTER)
+# function to add points to player and move horse
+def point(player, horseList):
 
-win.mainloop()
+   # get horse position
+   horse = horseList[player]
+   print(list(horse.place_info()))
+   (horsex, horsey) = horse.place_info()['x'], horse.place_info()['y']
+
+   # update horse position
+   horse.place(x = int(horsex) + 40, y = int(horsey))
+
+# function to compare words and add points
+def wordAssociation(wordlist, word, player, horseList):
+
+   if word in wordlist:
+      point(player-1, horseList)
+      wordlist.pop(input)
+
+# game itself
+def lexicalRace(theme):
+
+   # set up dictionary
+   listOfWords=getWords(theme)
+
+   # set up window
+   window = Tk() # create window
+   window.title("Lexical Race") # set title
+   window.geometry("900x700") # set size
+   font1 = ("Times", 24, "bold") # set font
+
+   # position horses 
+   horseList = []
+   horse1image = PhotoImage(file = "/Users/alinegouveia/Documents/GitHub/CogniTools/CogniTools/a-cavalo.png") # import image
+   horse2image = PhotoImage(file = "/Users/alinegouveia/Documents/GitHub/CogniTools/CogniTools/b-cavalo.png")
+   horse1 = Label(window, image = horse1image) # create label with image
+   horse2 = Label(window, image = horse2image)
+   horse1.place(x = 36, y = 233.3333333333333) # set position	
+   horse2.place(x = 36, y = 466.66666666667)
+   horseList.append(horse1) # create list with horses
+   horseList.append(horse2)
+   window.update() 
+
+   # create user inputs
+   horse1x = 36 # set position
+   horse2x = 36
+   userInput1 = Entry(window, width = 20, font=font1) # create text input
+   userInput2 = Entry(window, width = 20, font=font1)
+   userInput1.place(x = horse1x, y = 233 - 60) # set position
+   userInput2.place(x = horse2x, y = 466 + 60)
+   window.update()
+
+   # create submit button for horse 1
+   button1 = Button(window, text = "Submeter", font=font1, command= lambda: wordAssociation(listOfWords, userInput1.get(), 1, horseList)) # create button
+   button1.place(x = 36, y = 233 - 120) # set position
+   window.update()
+
+   # create submit button for horse 2
+   button2 = Button(window, text = "Submeter", font=font1, command= lambda: wordAssociation(listOfWords, userInput2.get(), 2, horseList)) # create button
+   button2.place(x = 36, y = 466 + 120) # set position
+   window.update()
+
+   window.mainloop()
+
+lexicalRace('Football')
+
+
+##Import the required libraries
+#from tkinter import *
+#from tkinter import ttk
+#
+##Create an instance of Tkinter Frame
+#win = Tk()
+#
+##Set the geometry
+#win.geometry("700x250")
+#
+## Define a function to return the Input data
+#def get_data():
+#   label.config(text= entry.get(), font= ('Helvetica 13'))
+#
+##Create an Entry Widget
+#entry = Entry(win, width= 42)
+#entry.place(relx= .5, rely= .5, anchor= CENTER)
+#
+##Inititalize a Label widget
+#label= Label(win, text="", font=('Helvetica 13'))
+#label.pack()
+#
+##Create a Button to get the input data
+#ttk.Button(win, text= "Click to Show", command= get_data).place(relx= .7, rely= .5, anchor= CENTER)
+#
+#win.mainloop()
