@@ -25,9 +25,8 @@ for key in blankcounter:
     if key in counter:
         del counter[key]
 
-print(counter)
-
-
+listOfWords = list(counter.keys())
+print(listOfWords)
 
 #Start a python GUI
 #Import the tkinter module
@@ -42,29 +41,14 @@ font1 = ("Times", 24, "bold")
 #Create a image
 
 
-horse2image = PhotoImage(file = "b-cavalo.png")
+horse2image = PhotoImage(file = "/Users/alinegouveia/Documents/GitHub/CogniTools/CogniTools/b-cavalo.png")
 horse2 = Label(window, image = horse2image)
 horse2.place(x = 36, y = 233.3333333333333)	
 window.update()
 
-horse1image = PhotoImage(file = "a-cavalo.png")
+horse1image = PhotoImage(file = "/Users/alinegouveia/Documents/GitHub/CogniTools/CogniTools/a-cavalo.png")
 horse1 = Label(window, image = horse1image)
 horse1.place(x = 36, y = 466.66666666667)	
-window.update()
-
-#create user input
-horse1x = 36
-userInput1 = Entry(window, width = 20, font=font1)
-userInput1.place(x = horse1x, y = 233 - 60)
-window.update()
-#create button to submit user input
-button1 = Button(window, text = "Submeter", font=font1, command= lambda : point(2))
-button1.place(x = 36, y = 233 - 120)
-window.update()
-
-horse2x = 36
-userInput2 = Entry(window, width = 20, font=font1)
-userInput2.place(x = horse2x, y = 466 + 70)
 window.update()
 
 def point(player):
@@ -79,5 +63,38 @@ def point(player):
         horse2x = horse2x + 40
         horse2.place(x = horse2x, y = 233.66666666667)
         window.update()
+
+
+def wordAssociation(player):
+    #see if the input is in the list of words
+    input=userInput1.get()
+
+    if input in listOfWords:
+        print("Correct")
+        #remove the word from the list
+        listOfWords.remove(input)
+        point(player)
+    else:
+        window.bell()
+
+
+#create user input
+horse1x = 36
+userInput1 = Entry(window, width = 20, font=font1)
+userInput1.place(x = horse1x, y = 233 - 60)
+window.update()
+#create button to submit user input
+button1 = Button(window, text = "Submeter", font=font1, command= wordAssociation(1))
+button1.place(x = 36, y = 233 - 120)
+window.update()
+
+horse2x = 36
+userInput2 = Entry(window, width = 20, font=font1)
+userInput2.place(x = horse2x, y = 466 + 70)
+window.update()
+
+
+        
+
 
 window.mainloop()
