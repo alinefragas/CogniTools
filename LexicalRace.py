@@ -73,8 +73,8 @@ def lexicalRace(theme):
 
    # position horses 
    horseList = []
-   horse1image = PhotoImage(file = "/Users/alinegouveia/Documents/GitHub/CogniTools/CogniTools/a-cavalo.png") # import image
-   horse2image = PhotoImage(file = "/Users/alinegouveia/Documents/GitHub/CogniTools/CogniTools/b-cavalo.png")
+   horse1image = PhotoImage(file = "/a-cavalo.png") # import image            ### COMPLETE WITH RIGHT PATH
+   horse2image = PhotoImage(file = "/b-cavalo.png")                           ### COMPLETE WITH RIGHT PATH
    horse1 = Label(window, image = horse1image) # create label with image
    horse2 = Label(window, image = horse2image)
    horse1.place(x = 36, y = 233.3333333333333) # set position	
