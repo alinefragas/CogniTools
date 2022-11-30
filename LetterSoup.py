@@ -26,9 +26,6 @@ letters = list(palavra)
 print(letters)
 listButtons = []
 
-
-
-
 listX= random.sample(range(50,850), len(letters))
 for i,letter in enumerate(letters):
     x = listX[i]
@@ -44,8 +41,6 @@ for i,letter in enumerate(letters):
 print(listButtons)
 #delete button from screen
 
-
-
 def onClick(i):
     global target
     if i == target:
@@ -59,8 +54,6 @@ def onClick(i):
         window.bell()
 
 
-    
-
 #Display the label
 label.pack()
 #Start the event loop
@@ -71,6 +64,3 @@ button.pack()
 
 
 window.mainloop()
-
-
-
